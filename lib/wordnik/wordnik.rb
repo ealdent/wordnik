@@ -8,11 +8,15 @@ module Wordnik
 
     def initialize(api_key = nil)
       @api_key = (api_key || File.read('.api-key').strip || '').dup
-      self.class.default_params :api_key => @api_key
+      unless @api_key.blank?
+        self.class.default_params :api_key => @api_key
+      end
     end
 
     def api_key=(api_key)
       @api_key = api_key.dup
+      self.class.default_params :api_key => @api_key
+      nil
     end
 
     def lookup(word)

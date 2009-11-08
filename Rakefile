@@ -11,7 +11,7 @@ begin
     gem.homepage = "http://github.com/ealdent/wordnik"
     gem.authors = ["Jason Adams"]
     gem.add_dependency "httparty", ">= 0.4.5"
-    gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
+    gem.add_development_dependency "shoulda", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

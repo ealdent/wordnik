@@ -4,21 +4,51 @@ require 'helper'
 #  same directory that you run your tests from, or else set the environment
 #  variable WORDNIK_API_KEY to the api key you wish to use.
 class TestWordnik < Test::Unit::TestCase
+  context "a single Wordnik instance" do
+    should "instantiate given an API key" do
+      assert_equal Wordnik::Wordnik.new('TESTTESTETESTTESTSETESTTESTTETST').nil?, false
+    end
+  end
+
   context "the Wordnik singleton" do
     setup do
-      api_key = (File.exists?('.api-key') ? File.read : ENV['WORDNIK_API_KEY']).strip
-      raise "No API key available." unless api_key
+      @api_key = (File.exists?('.api-key') ? File.read('.api-key') : ENV['WORDNIK_API_KEY']).strip
+      raise "No API key available." unless @api_key
 
-      @wordnik = Wordnik::Wordnik.instance(api_key)
+      @wordnik = Wordnik::DefaultWordnik.instance
+      @wordnik.api_key = @api_key
+      @test_word = 'test'
     end
 
-    should "instantiate given an API key" do
-      @wordnik.should true
+    should "make its api-key accessible" do
+      assert_equal @wordnik.api_key, @api_key
     end
 
-    should "lookup the id for word"
-    should "lookup definitions for a word"
-    should "lookup no more definitions than specified"
+    should "lookup the id for a word" do
+      word = @wordnik.lookup(@test_word)
+
+      assert_equal word.is_a?(Hash), true
+      assert_equal word.empty?, false
+      assert_equal word.member?('id'), true
+      assert_equal word['id'].to_i > 0, true
+    end
+
+    should "lookup definitions for a word" do
+      definitions = @wordnik.define(@test_word)
+
+      assert_equal definitions.is_a?(Array), true
+      assert_equal definitions.empty?, false
+      assert_equal definitions.first.is_a?(Hash), true
+      assert_equal definitions.first.member?('@id'), true
+    end
+
+    should "lookup no more definitions than specified" do
+      definitions = @wordnik.define(@test_word, 2)
+
+      assert_equal definitions.is_a?(Array), true
+      assert_equal definitions.size, 2
+    end
+
     should "find frequency counts for a word"
     should "find examples for a word"
     should "autocomplete a word fragment"
