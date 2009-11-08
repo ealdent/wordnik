@@ -18,6 +18,7 @@ class TestWordnik < Test::Unit::TestCase
       @wordnik = Wordnik::DefaultWordnik.instance
       @wordnik.api_key = @api_key
       @test_word = 'test'
+      @test_word_fragment = 'invas'
     end
 
     should "make its api-key accessible" do
@@ -49,9 +50,28 @@ class TestWordnik < Test::Unit::TestCase
       assert_equal definitions.size, 2
     end
 
-    should "find frequency counts for a word"
-    should "find examples for a word"
-    should "autocomplete a word fragment"
+    should "find frequency counts for a word" do
+      frequency = @wordnik.frequency(@test_word)
+
+      assert_equal frequency.is_a?(Hash), true
+      assert_equal frequency.member?('frequency'), true
+    end
+
+    should "find examples for a word" do
+      examples = @wordnik.examples(@test_word)
+
+      assert_equal examples.is_a?(Array), true
+      assert_equal examples.empty?, false
+    end
+
+    should "autocomplete a word fragment" do
+      suggestions = @wordnik.autocomplete(@test_word_fragment)
+
+      assert_equal suggestions.is_a?(Hash), true
+      assert_equal suggestions['match'].is_a?(Array), true
+      assert_equal suggestions['match'].empty?, false
+    end
+
     should "get the word of the day"
     should "get a random word"
   end
