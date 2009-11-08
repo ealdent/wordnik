@@ -2,25 +2,26 @@ module Wordnik
   class Word
     attr_reader :word
 
-    def initialize(word, eager = false)
+    def initialize(word, eager = false, wordnik_instance = nil)
       @word = word.dup.freeze
+      @wordnik = wordnik_instance || DefaultWordnik.instance
       load_all if eager
     end
 
     def wordnik_id
-      @wordnik_id ||= Wordnik.instance.lookup(word)['id']
+      @wordnik_id ||= @wordnik.lookup(word)['id']
     end
 
     def definitions
-      @definitions ||= Wordnik.instance.define(word)
+      @definitions ||= @wordnik.define(word)
     end
 
     def frequencies
-      @frequencies ||= Wordnik.instance.frequency(word)
+      @frequencies ||= @wordnik.frequency(word)
     end
 
     def examples
-      @examples ||= Wordnik.instance.examples(word)
+      @examples ||= @wordnik.examples(word)
     end
 
     private

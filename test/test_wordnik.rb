@@ -72,14 +72,49 @@ class TestWordnik < Test::Unit::TestCase
       assert_equal suggestions['match'].empty?, false
     end
 
-    should "get the word of the day"
-    should "get a random word"
+    should "get the word of the day" do
+      word = @wordnik.word_of_the_day
+
+      assert_equal word.is_a?(Hash), true
+      assert_equal word.member?('word'), true
+    end
+
+    should "get a random word" do
+      word = @wordnik.random
+
+      assert_equal word.is_a?(Hash), true
+      assert_equal word.member?('word'), true
+    end
   end
 
-  context "a word lazily loaded" do
-    should "provide its wordnik id"
-    should "provide its definitions"
-    should "provide frequency counts for its usage over the years"
-    should "provide examples of its usage"
+  context "a Word object" do
+    setup do
+      @api_key = (File.exists?('.api-key') ? File.read('.api-key') : ENV['WORDNIK_API_KEY']).strip
+      raise "No API key available." unless @api_key
+
+      @wordnik = Wordnik::DefaultWordnik.instance
+      @wordnik.api_key = @api_key
+
+      @word = Wordnik::Word.new('test', true, @wordnik)
+    end
+
+    should "provide its wordnik id" do
+      assert_equal @word.wordnik_id.to_i > 0, true
+    end
+
+    should "provide its definitions" do
+      assert_equal @word.definitions.is_a?(Array), true
+      assert_equal @word.definitions.empty?, false
+    end
+
+    should "provide frequency counts for its usage over the years" do
+      assert_equal @word.frequencies.is_a?(Hash), true
+      assert_equal @word.frequencies.member?('frequency'), true
+    end
+
+    should "provide examples of its usage" do
+      assert_equal @word.examples.is_a?(Array), true
+      assert_equal @word.examples.size > 0, true
+    end
   end
 end
