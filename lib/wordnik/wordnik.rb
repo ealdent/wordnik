@@ -3,13 +3,17 @@ module Wordnik
     include Singleton
     include HTTParty
 
+    attr_reader :api_key
+
     base_uri 'http://api.wordnik.com/api'
-    default_params :api_key => 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
     def initialize(api_key = nil)
-      self.class.module_eval %{
-        default_params :api_key => '\#{#{api_key.inspect} || File.read('.api-key').strip}'
-      }
+      @api_key = (api_key || File.read('.api-key').strip || '').dup
+      self.class.default_params :api_key => @api_key
+    end
+
+    def api_key=(api_key)
+      @api_key = api_key.dup
     end
 
     def lookup(word)
