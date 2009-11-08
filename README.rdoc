@@ -2,6 +2,12 @@
 
 Wordnik wants to be a place for all the words, and everything known about them.  They have provided a RESTful API accessible after applying for a key.  Visit http://docs.wordnik.com/api for more information and to apply for a key.
 
+== Installation
+
+Install gem via gemcutter.
+
+  gem install wordnik
+
 == Note on Patches/Pull Requests
 
 * Fork the project.
@@ -9,8 +15,7 @@ Wordnik wants to be a place for all the words, and everything known about them. 
 * Add tests for it. This is important so I don't break it in a
   future version unintentionally.
 * Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but
-   bump version in a commit by itself I can ignore when I pull)
+  If you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull
 * Send me a pull request. Bonus points for topic branches.
 
 == Copyright
