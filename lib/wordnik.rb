@@ -1,4 +1,5 @@
 require 'httparty'
 require 'singleton'
 require 'wordnik/wordnik'
+require 'wordnik/default_wordnik'
 require 'wordnik/word'

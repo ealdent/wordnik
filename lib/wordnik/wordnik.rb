@@ -1,6 +1,5 @@
 module Wordnik
   class Wordnik
-    include Singleton
     include HTTParty
 
     attr_reader :api_key
