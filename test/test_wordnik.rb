@@ -43,13 +43,6 @@ class TestWordnik < Test::Unit::TestCase
       assert_equal definitions.first.member?('@id'), true
     end
 
-    should "lookup no more definitions than specified" do
-      definitions = @wordnik.define(@test_word, 2)
-
-      assert_equal definitions.is_a?(Array), true
-      assert_equal definitions.size, 2
-    end
-
     should "find frequency counts for a word" do
       frequency = @wordnik.frequency(@test_word)
 
