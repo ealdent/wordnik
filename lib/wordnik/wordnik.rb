@@ -23,8 +23,12 @@ module Wordnik
       do_request("word.json/#{word.downcase}")
     end
 
-    def define(word, count = 100)
-      do_request("word.json/#{word.downcase}/definitions", :count => count)
+    def define(word, *args)
+      options = args.last.is_a?(Hash) ? args.pop : {}
+      unless options.key?(:count)
+        options[:count] = args.any? ? args.first.to_i : 100
+      end
+      do_request("word.json/#{word.downcase}/definitions", sanitize_options(options))
     end
 
     def frequency(word)
@@ -59,6 +63,20 @@ module Wordnik
       else
         result
       end
+    end
+
+    def sanitize_options(opts)
+      options = {}
+
+      [:count, :partOfSpeech].each { |k| options[k] = opts[k].dup if opts.key?(k) }
+      if options.key?(:partOfSpeech)
+        options[:partOfSpeech].reject! do |pos|
+          [:noun, :verb, :adjective, :adverb, :idiom, :article,
+            :abbreviation, :preposition, :prefix, :interjection, :suffix]
+        end
+      end
+
+      options
     end
   end
 end
