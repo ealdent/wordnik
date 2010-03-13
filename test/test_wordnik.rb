@@ -4,19 +4,18 @@ require 'helper'
 #  same directory that you run your tests from, or else set the environment
 #  variable WORDNIK_API_KEY to the api key you wish to use.
 class TestWordnik < Test::Unit::TestCase
-  context "a single Wordnik instance" do
+  context "initializing a Wordnik object" do
     should "instantiate given an API key" do
-      assert_equal Wordnik::Wordnik.new('TESTTESTETESTTESTSETESTTESTTETST').nil?, false
+      assert_equal Wordnik.new('TESTTESTETESTTESTSETESTTESTTETST').nil?, false
     end
   end
 
-  context "the Wordnik singleton" do
+  context "a single Wordnik instance" do
     setup do
       @api_key = (File.exists?('.api-key') ? File.read('.api-key') : ENV['WORDNIK_API_KEY']).strip
       raise "No API key available." unless @api_key
 
-      @wordnik = Wordnik::DefaultWordnik.instance
-      @wordnik.api_key = @api_key
+      @wordnik = Wordnik.new(@api_key)
       @test_word = 'test'
       @test_word_fragment = 'invas'
     end
@@ -40,7 +39,7 @@ class TestWordnik < Test::Unit::TestCase
       assert_equal definitions.is_a?(Array), true
       assert_equal definitions.empty?, false
       assert_equal definitions.first.is_a?(Hash), true
-      assert_equal definitions.first.member?('@id'), true
+      assert_equal definitions.first.member?('id'), true
     end
 
     should "find frequency counts for a word" do
@@ -69,45 +68,14 @@ class TestWordnik < Test::Unit::TestCase
       word = @wordnik.word_of_the_day
 
       assert_equal word.is_a?(Hash), true
-      assert_equal word.member?('word'), true
+      assert_equal word.member?('wordstring'), true
     end
 
     should "get a random word" do
       word = @wordnik.random
 
       assert_equal word.is_a?(Hash), true
-      assert_equal word.member?('word'), true
-    end
-  end
-
-  context "a Word object" do
-    setup do
-      @api_key = (File.exists?('.api-key') ? File.read('.api-key') : ENV['WORDNIK_API_KEY']).strip
-      raise "No API key available." unless @api_key
-
-      @wordnik = Wordnik::DefaultWordnik.instance
-      @wordnik.api_key = @api_key
-
-      @word = Wordnik::Word.new('test', true, @wordnik)
-    end
-
-    should "provide its wordnik id" do
-      assert_equal @word.wordnik_id.to_i > 0, true
-    end
-
-    should "provide its definitions" do
-      assert_equal @word.definitions.is_a?(Array), true
-      assert_equal @word.definitions.empty?, false
-    end
-
-    should "provide frequency counts for its usage over the years" do
-      assert_equal @word.frequencies.is_a?(Hash), true
-      assert_equal @word.frequencies.member?('frequency'), true
-    end
-
-    should "provide examples of its usage" do
-      assert_equal @word.examples.is_a?(Array), true
-      assert_equal @word.examples.size > 0, true
+      assert_equal word.member?('wordstring'), true
     end
   end
 end
