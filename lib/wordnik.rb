@@ -3,6 +3,9 @@ require 'httparty'
 class Wordnik
   include HTTParty
 
+  PARTS_OF_SPEECH = [:noun, :verb, :adjective, :adverb, :idiom, :article, :abbreviation,
+    :preposition, :prefix, :interjection, :suffix, :"verb-transitive", :"verb-intransitive"]
+
   attr_reader :api_key
 
   base_uri 'http://api.wordnik.com/api'
@@ -79,11 +82,9 @@ class Wordnik
     options[:hasDictionaryDef] = !!opts[:hasDictionaryDef] if opts.key?(:hasDictionaryDef)
 
     if opts.key?(:partOfSpeech)
-      options[:partOfSpeech] = opts[:partOfSpeech].reject do |pos|
-        ![:noun, :verb, :adjective, :adverb, :idiom, :article, :abbreviation, :preposition, :prefix, :interjection, :suffix].include?(pos.to_sym)
-      end
+      options[:partOfSpeech] = opts[:partOfSpeech].to_a.reject { |pos| !PARTS_OF_SPEECH.include?(pos.to_sym) }.join(',')
     end
 
-    options
+    { :query => options }
   end
 end
