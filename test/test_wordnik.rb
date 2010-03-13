@@ -77,5 +77,13 @@ class TestWordnik < Test::Unit::TestCase
       assert_equal word.is_a?(Hash), true
       assert_equal word.member?('wordstring'), true
     end
+
+    should "get punctuation info for a word" do
+      punctuation = @wordnik.punctuation(@test_word)
+
+      assert_equal punctuation.is_a?(Hash), true
+      assert_equal punctuation.key?('wordId'), true
+      assert_equal punctuation.key?('periodCount'), true
+    end
   end
 end
