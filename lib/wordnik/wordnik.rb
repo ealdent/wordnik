@@ -51,6 +51,10 @@ module Wordnik
       do_request("words.json/randomWord", :hasDictionaryDef => has_definition)
     end
 
+    def punctuation(word)
+      do_request("word.json/#{word.downcase}/punctuationFactor")
+    end
+
     protected
 
     def do_request(request, options = {})
@@ -68,7 +72,7 @@ module Wordnik
     def sanitize_options(opts)
       options = {}
 
-      [:count, :partOfSpeech].each { |k| options[k] = opts[k].dup if opts.key?(k) }
+      [:count, :partOfSpeech].each { |k| options[k] = opts[k] if opts.key?(k) }
       if options.key?(:partOfSpeech)
         options[:partOfSpeech].reject! do |pos|
           [:noun, :verb, :adjective, :adverb, :idiom, :article,
