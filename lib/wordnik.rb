@@ -50,9 +50,13 @@ class Wordnik
   def word_of_the_day
     do_request("wordoftheday.json")
   end
-
-  def random(has_definition = true)
-    do_request("words.json/randomWord", :hasDictionaryDef => has_definition)
+  
+  def random(has_definition = true, limit = 1)
+    if limit == 1
+      do_request("words.json/randomWord", :hasDictionaryDef => has_definition)
+    else
+      do_request("words.json/randomWords", {:hasDictionaryDef => has_definition, :limit => limit})
+    end
   end
 
   def punctuation(word)
@@ -78,6 +82,7 @@ class Wordnik
   def sanitize_options(opts)
     options = {}
 
+    options[:limit] = opts[:limit].to_i if opts.key?(:limit)
     options[:count] = opts[:count].to_i if opts.key?(:count)
     options[:hasDictionaryDef] = !!opts[:hasDictionaryDef] if opts.key?(:hasDictionaryDef)
 
