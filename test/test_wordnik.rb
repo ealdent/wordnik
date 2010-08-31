@@ -1,7 +1,7 @@
 require 'helper'
 
-#  In order to run any tests, you must copy your API key into a file in the
-#  same directory that you run your tests from, or else set the environment
+#  In order to run any tests, you must copy your API key into a file named .api-key 
+#  in the same directory that you run your tests from, or else set the environment
 #  variable WORDNIK_API_KEY to the api key you wish to use.
 class TestWordnik < Test::Unit::TestCase
   context "initializing a Wordnik object" do

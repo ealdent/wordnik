@@ -7,6 +7,10 @@ Wordnik wants to be a place for all the words, and everything known about them. 
 Install gem via gemcutter.
 
   gem install wordnik
+  
+== Usage
+
+For a summary of implemented methods, check out {rdoc.info/github/ealdent/wordnik}[http://rdoc.info/github/ealdent/wordnik/master/Wordnik] or simply peek inside lib/wordnik.rb
 
 == Note on Patches/Pull Requests
 
@@ -20,4 +24,4 @@ Install gem via gemcutter.
 
 == Copyright
 
-Copyright (c) 2009 Jason Adams under the BSD license. See LICENSE for details.
+Copyright (c) 2009-2010 Jason Adams under the BSD license. See LICENSE for details.
