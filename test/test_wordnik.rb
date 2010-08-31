@@ -78,6 +78,14 @@ class TestWordnik < Test::Unit::TestCase
       assert_equal word.member?('wordstring'), true
     end
 
+    should "get random words" do
+      words = @wordnik.random(true, 20)
+      assert words.is_a?(Array)
+      assert words.first.is_a?(Hash)
+      assert words.first.member?('wordstring')
+      assert_equal 20, words.size
+    end
+
     should "get punctuation info for a word" do
       punctuation = @wordnik.punctuation(@test_word)
 
